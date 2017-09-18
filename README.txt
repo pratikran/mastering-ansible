@@ -11,6 +11,10 @@ Preparation
   Installation
     http://docs.ansible.com/ansible/latest/intro_installation.html
     
+    Ansible is python aplication
+        can be install using pip
+    
+    
   
     
     
