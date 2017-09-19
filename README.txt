@@ -123,7 +123,36 @@ FOUNDATION
                     negation
                     
             
-            
+TASKS
+    
+     Ansible Docs - Running commands (tasks)
+            http://docs.ansible.com/ansible/latest/intro_getting_started.html#your-first-commands
+     Ansible Docs - ping
+            http://docs.ansible.com/ansible/latest/ping_module.html
+     Ansible Docs - command 
+            http://docs.ansible.com/ansible/latest/command_module.html
+    
+    Simple Tasks
+    
+    ansible -m ping all
+        ping is a module
+    ansible -m command -a "hostname" all
+        command module is default
+    ansible -a "hostname" all
+        same as above
+        
+    (tasks with key value parameter)
+    (tasks have retunr STATUS, return code(rc))
+    
+    ansible -a "/bin//false" all
+        any task returns STATUS, rc of command run on hosts, not for ansible run
+        
+    CORE Modules
+    NOT CORE Modules
+    
+    
+        
+        
             
        
        
