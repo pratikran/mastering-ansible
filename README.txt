@@ -186,12 +186,87 @@ PLAYBOOK EXECUTION
     playbook
         tasks
             name
-            command
+            module
         (task has a name now)
+
+
+PLAYBOOKS
+    
+Playbook Introduction
+    
+    Ansible Docs - Module Index
+            http://docs.ansible.com/ansible/latest/modules_by_category.html
+    
+    
+Packages Apt
+
+    Ansible Docs - apt
+            http://docs.ansible.com/ansible/latest/apt_module.html
+            
+    cd ansible
+    touch loadbalancer.yml
+        nginx
+    touch database.yml
+        mysql
         
+Packages Become
+
+    Running host command without different user than the logged-in user
+        eg - sudo user etc
     
+     Ansible Docs - Privilege Escalation
+            http://docs.ansible.com/ansible/latest/become.html
+     Ansible Docs - boolean (Scroll to fourth code block)
+            http://docs.ansible.com/ansible/latest/YAMLSyntax.html#yaml-basics
+     YAML Docs - boolean 
+            http://yaml.org/type/bool.html
+            
+            
+     cd ansible
+     ansible-playbook loadbalancer.yml
+                ERROR: fatal: [lb01]: FAILED! => {"changed": false, "failed": true, "msg": "Failed to lock apt for exclusive operation"}
+                changed=0, failed=1
+                
+     loadbalancer.yml
+        become: true
+            superuser priv
+     
+     ansible-playbook loadbalancer.yml
+     
+     executing once again completes quicker
+        ansible-playbook loadbalancer.yml
+            changed=0, failed=0
+            
+     ansible-playbook database.yml
+        become: true
+        
+        
+Packages With_Items
     
-    
+      Ansible Docs - Loops (with_items)
+            http://docs.ansible.com/ansible/latest/playbooks_loops.html#standard-loops
+      Jinja2 Homepage 
+            http://jinja.pocoo.org/
+            
+      cd ansible            
+      touch webserver.yml
+            to avoid repetition of same lines of code
+            to add a list of packages
+                apt: name={{item}}
+                        jinja syntax
+                with_items:
+                
+Services: service
+      
+      Ansible Docs - service
+            http://docs.ansible.com/ansible/latest/service_module.html
+            
+      
+            
+      
+        
+      
+     
 
     
     
