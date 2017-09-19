@@ -38,10 +38,66 @@ Preparation
             
         config file = /etc/ansible/ansible.cfg
         
-     
-        
-        
+FOUNDATION
     
+  INVENTORY Pt1
+    http://docs.ansible.com/ansible/latest/intro_dynamic_inventory.html
+    http://docs.ansible.com/ansible/latest/intro_inventory.html
+    
+    Populate Target environment
+    Inventory
+        Static
+        Dynamic
+    
+        Default Inventory
+                ansible --list-hosts all
+          file
+                vim /etc/ansible/hosts
+                        Delete pre-defined hosts
+                            may interfere with our inventory
+        ansible --list-hosts all
+                0 hosts
+    
+   INVENTORY Pt2
+     
+     F:\Code\devops\udemy-mastering-ansible\mastering-ansible\S2
+            Vagrantfile
+            mkdir -p ansible/dev
+            cd ansible/dev
+     In Editor
+        create a Inventory File dev-1
+            (It can be simple group of host names)
+            (It can be groups of different type of servers)
+            
+       vagrant ssh control
+       cd /vagrant/ansible/dev
+       ansible --list-hosts all
+            0 hosts
+       ansible -i dev-1 --list-hosts all
+            5 hosts
+            
+     By default, ansible ssh into hosts
+        even on control/workstation host
+            totally unnecessary as we work from control host
+                so add in dev-1 file,
+                        control ansible_connection=local
+       
+     Order of Inventory file is set in 
+            /etc/ansible/ansible.cfg
+                inventory = file
+            override to local dev/other file
+                
+                cd /vagrant/ansible/dev
+                
+                create local ansible.cfg
+                    inventory = ./dev-1
+        
+                ansible --list-hosts all
+                        5 hosts
+                        
+                        
+                
+                
     
   
     
