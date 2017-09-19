@@ -377,6 +377,33 @@ FILES: File
         
 FILES: Template
     
+    Ansible Docs - template
+            http://docs.ansible.com/ansible/latest/template_module.html
+            
+    template module
+        template inplace of copy a file to remote, 
+            first supply variable values, render content to remote host
+            
+    mkdir ansible/templates
+    cd templates
+    touch nginx.conf.j2
+            jinja2 file firmat, nginx conf
+         add server loop, other configurations - listen port, location
+    
+    cd ansible
+    loadbalancer.yml
+        default nginx site disabled
+        demo site enabled
+        nginx.conf.j2 template is suuplied to server lb01
+        notify restart nginx
+        
+    curl app01
+    curl app02
+    curl lb01
+    
+    
+        
+    
     
     
 
