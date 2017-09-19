@@ -267,7 +267,7 @@ Services: service
             service
                 to start nginx
                 
-      wget -q0 http://lb01 | less
+      wget -qO - http://lb01 | less
             
       cd ansible
       touch control.yml
@@ -284,7 +284,43 @@ Services: service
         
         ansible-playbook database.yml
          
-         
+SUPPORT Playbook 1 - STACK Restart
+    
+    Operation SUpport
+            to keep eye on stack running and operating well
+            
+    cd ansible/playbooks
+        touch stack_restart.yml
+        
+SERVICES: Apache2_modules, handlers, notify
+    
+     Ansible Docs - apache2_module
+            http://docs.ansible.com/ansible/latest/apache2_module_module.html
+     Ansible Docs - handlers, notify 
+            http://docs.ansible.com/ansible/latest/playbooks_intro.html#handlers-running-operations-on-change
+            
+     apache2_module
+            need to ensure libapache2-mod-wsgi is enabled, installed earlier
+     
+            webserver.yml
+                add service to enable mod_wsgi 
+                  apache2 need restart before this module takes effect
+                    add handler for the service to restart apache2
+                        service cant be directly used in tasks
+                            as service with state=restart will always restart, not conditionally
+                    add notify to restart apache2 on the conditional event that mod_swgi is enabled now ie there is a change
+                    
+                all notify aggregate together
+                handlers can be flushed to the end
+                
+            cd ansible
+            ansible-playbook webserver.yml
+            
+                    
+            
+                
+            
+     
         
       
         
