@@ -170,7 +170,28 @@ PLAYS
         tasks
             module: command_to_run
          
-
+PLAYBOOK EXECUTION
+    
+    Ansible Docs - Playbook Execution
+        http://docs.ansible.com/ansible/latest/playbooks_intro.html#executing-a-playbook
+        
+    cd ansible
+    ansible-playbook playbooks/hostname.yml
+        cmdLine options -a/-m are within playbook now
+        argument patterns is within palybook now
+        
+        returns status of ansible
+            but the result of the host commands has to be determined by us
+            
+    playbook
+        tasks
+            name
+            command
+        (task has a name now)
+        
+    
+    
+    
 
     
     
