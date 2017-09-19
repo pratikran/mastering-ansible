@@ -316,11 +316,46 @@ SERVICES: Apache2_modules, handlers, notify
             cd ansible
             ansible-playbook webserver.yml
             
-                    
+Files: Copy
+    
+    Ansible Docs - copy
+            http://docs.ansible.com/ansible/latest/copy_module.html
             
-                
+    copy module
+    
+    cd ansible
+    webserver.yml
+        add copy module
+            copy demo app to webserver in new path
+                '/' at end demo/app/ is important for not full app dir with path but only contents to be copied
+            copy new configuration file to webserver
+            restart apache2
             
-     
+        
+Application Modules: PIP
+    
+    Ansible Docs - pip
+            http://docs.ansible.com/ansible/latest/pip_module.html
+            
+          
+    cd ansible
+    webserver.yml
+        pip module
+            install python libraries and dependencies
+            install virtual environment
+        notify restart apache2
+        
+    ansible-playbook webserver.yml
+
+
+FILES: File
+    
+    file module
+    
+    Ansible Docs - file
+            http://docs.ansible.com/ansible/latest/file_module.html
+            
+    
         
       
         
