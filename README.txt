@@ -355,8 +355,31 @@ FILES: File
     Ansible Docs - file
             http://docs.ansible.com/ansible/latest/file_module.html
             
-    
+    file module
+        modifies file properties on remote 
+        here
+            enable python site
+            disable apache2 default site
+
+    cd ansible
+    webserver.yml
+        add file module
+            default apache2 site disabled
+            python site enabled by symlink
+            
+    curl app01
+    curl app02
+
+    curl lb01
+        still will respond to default nginx
+        need to change
         
+        
+FILES: Template
+    
+    
+    
+
       
         
       
