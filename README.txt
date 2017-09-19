@@ -150,8 +150,31 @@ TASKS
     CORE Modules
     NOT CORE Modules
     
+PLAYS
+    TASKS in PLAYBOOKS to WRITE PLAYS    
     
+    ANsible Docs - Plays
+            http://docs.ansible.com/ansible/latest/playbooks_intro.html#playbook-language-example
+    
+    YAML
+    
+    mkdir ansible/playbooks
+    cd ansible/playbooks
+    
+    touch hostname.yml
+        edit
         
+    PLAYS in PLAYBOOKS
+        Write and Run Multiple Tasks in playbooks against any hostname
+        
+        tasks
+            module: command_to_run
+         
+
+
+    
+    
+    
         
             
        
