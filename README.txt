@@ -402,7 +402,55 @@ FILES: Template
     curl lb01
     
     
+FILES: lineinfile
+    
+    Ansible Docs - lineinfile
+            http://docs.ansible.com/ansible/latest/lineinfile_module.html
+            
+    connection to database on db01 database host
+        ssh db01
+            netstat -an 
+                local address listening
+                127.0.0.1:3306
+            nc -zv localhost 3306
+                
+            not listening on external port
+            db connect will fail
+            
+            vim /etc/mysql/my.cnf
+                bind-address 127.0.0.1
+                
+            copy module, template module, or hardcode changes are option to
+                change bind_address
+            
+            but better is lineinfile module of ansible
+                it keeps only changes in the specific lines like
+                    bind_address
+    
+            exit
+    
+   cd ansible
+   database.yml
+        add task
+            use module lininfile
+                change bind-address to listen on all address port 
+            notify: restart mysql
+        add handler to restart mysql
         
+   ansible-playbook database.yml
+   
+   ansible -a "netstat -an" db01
+   
+   curl app01/db
+        ERROR: No module named MySQLdb
+        
+   
+   
+   
+                
+        
+        
+          
     
     
     
