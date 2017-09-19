@@ -445,32 +445,34 @@ FILES: lineinfile
         ERROR: No module named MySQLdb
         
    
-   
-   
-                
-        
-        
-          
-    
-    
-    
+APPLICATION Modules: Mysql_db, mysql_user
 
-      
-        
-      
-     
-
-    
-    
-    
-        
+    Ansible Docs - mysql_db
+            http://docs.ansible.com/ansible/latest/mysql_db_module.html
+    Ansible Docs - mysql_user    
+            http://docs.ansible.com/ansible/latest/mysql_user_module.html
             
-       
-       
-                
-                
+    curl app01/db
+        ERROR: No module named MySQLdb            
+            
+        some python dependencies to configure
+        some configuration on mysql host needed
+        
+    cd ansible
+    webserver.yml
+        install 
+            python_mysqldb
+            
+    ansible-playbook webserver.yml
     
-  
-    
+    database.yml
+        install python-mysqldb
+        add mysql_db - create db
+        add mysql_user - configure db
+        
+    curl app01/db
+    curl app02/db
+    curl lb01/db
+    curl lb01
     
     
