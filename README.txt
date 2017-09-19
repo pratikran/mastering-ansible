@@ -95,7 +95,38 @@ FOUNDATION
                 ansible --list-hosts all
                         5 hosts
                         
-                        
+   HOST SELECTION
+       Ansible Docs - Patterns
+            http://docs.ansible.com/ansible/latest/intro_patterns.html
+            
+       Commands can be run against a subset of inventory
+         using patterns
+        
+       COMMON PATTERNS
+            ansible --list-hosts all
+            ansible --list-hosts "*"
+            
+            ansible --list-hosts loadbalancer
+            ansible --list-hosts webserver
+            
+            ansible --list-hosts db01
+            
+            ansible --list-hosts "app0*"
+            
+            ansible --list-hosts database:control
+                    in future ":" can be replaced with ","
+                    
+            ansible --list-hosts webserver[0]
+                    used index 
+                    
+            ansible --list-hosts \!control
+                    negation
+                    
+            
+            
+            
+       
+       
                 
                 
     
