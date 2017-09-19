@@ -261,8 +261,31 @@ Services: service
       Ansible Docs - service
             http://docs.ansible.com/ansible/latest/service_module.html
             
-      
+      cd ansible
+      vim loadbalancer.yml
+        add module 
+            service
+                to start nginx
+                
+      wget -q0 http://lb01 | less
             
+      cd ansible
+      touch control.yml
+      
+      ansible-playbook control.yml
+      
+      webserver.yml
+        similar to loadbalancer.yml, add service for apache2 start and enable
+        
+        ansible-playbook webserver.yml
+        
+      database.yml
+        similar to loadbalancer.yml, add service for mysql start and enable
+        
+        ansible-playbook database.yml
+         
+         
+        
       
         
       
