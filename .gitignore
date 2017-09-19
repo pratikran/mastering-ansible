@@ -1,0 +1,8 @@
+# ignore Ansible-Directory-Snapshot.zip
+**/Ansible-Directory-Snapshot.zip
+
+# ignore Changes.txt
+**/Changes.txt
+
+# ignore .vagrant folder
+**/.vagrant/
