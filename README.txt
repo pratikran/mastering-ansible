@@ -5,9 +5,20 @@ Configuration Management and Orchestration
 Preparation
   Environment Setup
     https://www.vagrantup.com/
+    
+    F:\Code\devops\udemy-mastering-ansible\mastering-ansible\S2
+    
     Topology.pdf
     Vagrantfile
-    
+  
+  vagrant plugin install vagrant-hostmanager
+  vagrant up
+  (vagrant halt) for stopping
+  
+  vagrant ssh control
+  cd /vagrant
+  mkdir ansible
+  
   Installation
     http://docs.ansible.com/ansible/latest/intro_installation.html
     
