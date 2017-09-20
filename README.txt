@@ -559,3 +559,15 @@ SUPPORT PLAYBOOK 2 - Stack Status: uri, register, fail, when
             ansible-playbook playbooks/stack_status.yml
                 
             
+PLAYBOOKS Summary
+    make it work
+    make it right
+    make it fast
+    
+    configuration management
+        do with confidence in an idempotent manner
+            and without bringing down the stack
+            
+    version controlled infrastructure
+    
+
