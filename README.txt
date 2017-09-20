@@ -702,6 +702,100 @@ VARIABLES: facts
     ansible-playbook playbooks/stack_restart.yml
     
 
+VARIABLES: defaults
+    
+    Ansible Docs - role defaults
+            http://docs.ansible.com/ansible/latest/playbooks_roles.html#role-default-variables
+            
+    mysql role 
+    roles/mysql/tasks/main.yml
+        current demo user and database configuration is 
+            hardcoded and for an isolated and unshared database
+        
+        to make generic/standalone/multi-db setup, 
+            edit 
+                roles/mysql/tasks/main.yml
+            to use variables 
+                db_name. db_user_name, db_user_pass, db_host_name
+                
+        roles/mysql/defaults/main.yml
+            add above variables key-values
+            
+VARIABLES: vars
+    
+    Ansible Docs - variables
+            http://docs.ansible.com/ansible/latest/playbooks_variables.html
+            
+    Variable Precedence
+        changes with ansible version
+            http://docs.ansible.com/ansible/latest/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable
+        
+        
+    roles/mysql/vars/main.yml
+    vars: key/value in tasks
+    vars: key/value at play level ie same level as hosts:
+    vars: under include: (as in site.yml)
+    vars: in play under roles
+    
+    flat variable hierarchy is better
+    
+    place vars in predictable place, 1 or may be 2 places
+        vars enter global namespace and difficult to maintain if not simple pattern followed
+        
+        good places
+            role defaults
+            while instantiating a role
+            using a separate file
+                vars file
+                group vars file - prefferable
+                
+        keep variables simple
+        
+     cd ansible
+     database.yml
+        roles:
+          -  { role: mysql, db_name: demo, ...}
+          
+
+VARIABLES: with_dict
+        
+     Ansible Docs - with_dict
+            http://docs.ansible.com/ansible/latest/playbooks_loops.html#looping-over-hashes
+            
+     
+     roles/nginx/tasks/main.yml
+          
+          currently configured
+                1 nginx port listening to 2 application server ports
+          
+          real world scenario:
+                more than 1 nginx frontend ports
+                    listening to multiple backend application server ports
+                    
+     with_dict
+            roles/nginx/defaults/main.yml
+                configure - site app, frontend/backend ports
+                
+            roles/nginx/tasks/main.yml
+                remove reference to 'demo'
+                    using with_dict and item.key
+            
+            roles/nginx/templates/nginx.conf.j2
+                replace 'demo' with {{ item.key }} in upstream and location
+                        port with {{ item.value.backend }}
+                
+            ansible-playbook loadbalancer.yml
+            ansible-playbook playbooks/stack_status.yml
+            
+            
+            
+                
+            
+            
+        
+        
+        
+        
     
                 
     
