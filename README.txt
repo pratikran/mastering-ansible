@@ -37,6 +37,7 @@ Preparation
                 python version = 2.7.6 (default, Oct 26 2016, 20:30:19) [GCC 4.8.4]
             
         config file = /etc/ansible/ansible.cfg
+        (instructor ansible version 1.9.3)
         
 FOUNDATION
     
@@ -476,3 +477,74 @@ APPLICATION Modules: Mysql_db, mysql_user
     curl lb01
     
     
+SUPPORT PLAYBOOK 2: Stack Status, Wait_For
+    
+    Ansible Docs - wait_for
+            http://docs.ansible.com/ansible/latest/wait_for_module.html
+
+    cd ansible/playbooks
+    touch stack_status.yml
+        command module inplace of service module
+        
+        wait_for module
+            watch ports listening for a time period
+    ansible-playbook playbooks/stack_status.yml
+            
+    stack_restart.yml
+        add wait_for module to avoid traffic before a service restarts
+            loadbalancer: state drained
+                ensure no old connection dropped, and service stopped
+            state started is default
+        
+        
+SUPPORT PLAYBOOK 2 - Stack Status: uri, register, fail, when
+    
+    Ansible Docs - uri
+            http://docs.ansible.com/ansible/latest/uri_module.html
+    Ansible Docs - register
+            http://docs.ansible.com/ansible/latest/playbooks_conditionals.html#register-variables
+    Ansible Docs - when
+            http://docs.ansible.com/ansible/latest/playbooks_conditionals.html#the-when-statement
+    Ansible Docs - with_items 
+            http://docs.ansible.com/ansible/latest/playbooks_loops.html#standard-loops
+            
+
+    uri module
+        interact with services and get to return content for actual status show
+        
+    cd ansible
+        python-httplib2
+            useful to get server status from loadbalancer host
+            also for status of loadbalancer from control host
+        
+        loadbalancer.yml
+            install python-httplib2
+            
+        ansible-playbook loadbalancer.yml
+            
+        control.yml
+            install python-httplib2
+            
+        ansible-playbook control.yml
+            
+        cd ansible/playbooks
+        stack_status.yml
+            add hosts: control
+                tasks: verify end-to-end response from control to lb and to db,  return content
+                with_items: groups.loadbalancer
+                set location for returned content to be checked later
+                    register module
+                        lb_index, lb_db - new variables created
+                
+                fail module
+                    to check earlier saved content in lb_index
+        
+            add hosts: loadbalancer
+                tasks: backend response from lb to servers and to db
+                with_items: webserver
+                save location variables in register: app_index, app_db
+                faile module: check content, item.item, item.content
+            
+            ansible-playbook playbooks/stack_status.yml
+                
+            
