@@ -601,5 +601,107 @@ CONVERTING TO ROLES: Tasks, Handlers
      Ansible Docs - roles
             http://docs.ansible.com/ansible/latest/playbooks_roles.html
      
+     cd ansible
+     copy control.yml:tasks to roles/control/tasks/main.yml
+     control.yml
+        roles: control
      
+     ansible-playbook control.yml
+            same as previous 
+            
+
+     copy database.yml:tasks to roles/mysql/tasks/main.yml
+        also,
+            interchange tasks for service start and bind_address configuration
+                necessary sequence to follow in terms of mysql db service    
+     database.yml
+        roles: mysql
+     copy database.yml:handlers to roles/mysql/handlers/main.yml
+        roles: mysql
+        
+     ansible-playbook database.yml
+            same as previous
+
+
+CONVERTING TO ROLES: Files, Templates
+
+    Ansible Docs - roles
+            http://docs.ansible.com/ansible/latest/playbooks_roles.html
+            
+     copy loadbalancer.yml:tasks to roles/nginx/tasks/main.yml
+        also,
+            interchange tasks for service start with the last of configuration change task
+                necessary sequence to follow in terms of nginx service    
+     copy loadbalancer.yml:handlers to roles/nginx/handlers/main.yml
+     loadbalancer.yml
+        roles: nginx     
+        
+     ansible-playbook loadbalancer.yml
+            same as previous
+     
+     mkdir ansible/roles/nginx/templates
+     move ansible/templates/nginx.conf.j2 to ansible/roles/nginx/templates/
+            roles/nginx/tasks/main.yml
+                configure nginx site
+                    remove 'templates' from the conf file base dir
+                
+     webserver.yml
+     copy tasks to one of these as applicable
+            roles/apache2/tasks/main.yml
+                    also move apache2 service start to the end
+            roles/demo_app/tasks/main.yml
+     copy handlers to 
+            roles/apache2/handlers/main.yml
+            roles/demo_app/handlers/main.yml 
+     webserver.yml
+        roles: apache2 demo_app          
+     
+     mkdir ansible/roles/demo_app/files
+     move ansible/demo to ansible/roles/demo_app/files/
+  
+
+Site.yml: include
+    
+    Ansible Docs - roles and include
+            http://docs.ansible.com/ansible/latest/playbooks_roles.html
+            
+    cd ansible
+    touch site.yml
+        2b used to run all playbook in one go
+        
+        include key
+            include yaml for control, database, webserver, loadbalancer
+            
+    ansible-playbook site.yml
+    
+VARIABLES: facts
+    
+    Ansible Docs - facts
+            http://docs.ansible.com/ansible/latest/playbooks_variables.html#information-discovered-from-systems-facts
+    facts
+        check facts variables
+            ansible -m setup <HOSTNAME>
+    
+    roles/mysql/tasks/main.yml
+        problem
+            bind_address is hardcoded
+        dynamic variables
+            ansible -m setup db01
+                bind_address={{ ansible_eth1.ipv4.address }}
+        ansible-playbook database.yml
+    
+    stack status and restart
+        playbooks/stack_status.yml
+            verify mysql is listening on port 3306
+                wait_for: add host={{ ansible_eth1.ipv4.address }}
+        playbooks/stack_restart.yml
+                port 3306
+                    wait_for: add host={{ ansible_eth1.ipv4.address }}
+     
+    ansible-playbook playbooks/stack_status.yml
+    ansible-playbook playbooks/stack_restart.yml
+    
+
+    
+                
     
