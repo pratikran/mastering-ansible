@@ -571,3 +571,35 @@ PLAYBOOKS Summary
     version controlled infrastructure
     
 
+ROLES
+
+ROLES OVERVIEW
+    
+    Ansible Docs - roles
+            http://docs.ansible.com/ansible/latest/playbooks_roles.html
+            
+    Roles
+        code reuse for multiple apps
+        encapsulation
+            to scale infrastructure properly
+        
+        ansible galaxy
+            public role repository
+            
+    cd ansible
+    mkdir roles
+    cd roles
+    ansible-galaxy init control
+    ansible-galaxy init nginx
+    ansible-galaxy init apache2
+    ansible-galaxy init demo_app
+    ansible-galaxy init mysql
+    
+    
+CONVERTING TO ROLES: Tasks, Handlers
+    
+     Ansible Docs - roles
+            http://docs.ansible.com/ansible/latest/playbooks_roles.html
+     
+     
+    
