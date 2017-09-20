@@ -7,5 +7,6 @@
 # ignore .vagrant folder
 **/.vagrant/
 
-# ignore .retry files
+# ignore *.retry, *.data files
 *.retry
+*.data
