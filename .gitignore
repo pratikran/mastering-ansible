@@ -6,3 +6,6 @@
 
 # ignore .vagrant folder
 **/.vagrant/
+
+# ignore .retry files
+*.retry
