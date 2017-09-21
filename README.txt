@@ -991,26 +991,192 @@ External Roles & Galaxy
                                 so, you need flexibility
                     Updates rolling in or not ie new features etc
                     
+                    
+                    
+Advanced Execution Introduction
+        
+        time ansible-playbook site.yml
+            took >6 minutes around
+        
+
+Removing Unnecessary Steps: gather_facts
+        
+        Ansible Docs - gather_facts
+                http://docs.ansible.com/ansible/latest/playbooks_variables.html#turning-off-facts
                 
-              
+        ansible/playbooks/stack_status.yml
+            
+                add gather_facts: false
+                    to relevant play sections (database would be exception for it needs IP address of host main interfaces)
+                    
+        gather_facts: false
+                
+                add it all plays(top level yml)
+                    database will exception
+                    
+        time ansible-playbook site.yml
+            took >3 minutes around
                     
                 
+Extracting Repetitive Tasks: cache_valid_time
+        
+        Ansible Docs - apt
+            http://docs.ansible.com/ansible/latest/apt_module.html
+        
+        
+        lot of tasks are waiting for apt execution
                 
+               update_cache=yes
+                    overhead as it update cache after initial install everytime
+                    
+               apt module
+                    cache_valid_time
+                        implicitly sets update_cache
+                            only when cache is old that this
+               
+               we can take out update_cache from everywhere and put it as once only act in site.yml
+                    then remove from all other playbooks
+                    
+               site.yml
+                    to add task for apt module cache update 
+                    
+               remove update_cache from all of the tasks inside roles
+               
+               time ansible-playbook site.yml
+                    took <1.5 minutes around
+                    
+                    
+Limiting Execution by Hosts: limit
+        
+        Ansible Docs - Patterns (limit - near the bottom)
+                http://docs.ansible.com/ansible/latest/intro_patterns.html
+                
+        
+        time ansible-playbook site.yml --limit app01
             
+            while making changes to playbooks for tackling particular situation
+                we can thus run only for partiular host using limit parameter
                 
+
+
+Limiting Execution by Tasks: tags
         
+         Ansible Docs - tags
+                http://docs.ansible.com/ansible/latest/playbooks_tags.html
                 
+         tags
+              select parts of our playbooks, just few tasks
+                horizontal selection across hosts
                 
+         roles/control/tasks/main.yml
+                add tags - packages
+                
+         ansible-playbook site.yml --list-tags
+                shows all tags
+                
+         ansible-playbook site.yml --tags "packages"
+         
+         ansible-playbook site.yml --skip-tags "packages"
+                to skip a tag
+                
+         add tags to all tasks under roles
+                also site.yml
+                
+         time ansible-playbook site.yml --list-tags
+         
+         time ansible-playbook site.yml --skip-tags "packages"
+         
+         don't add too many logic
+         
+         
+Idempotence: changed_when, failed_when
+        
+        Ansible Docs - changed_when
+                http://docs.ansible.com/ansible/latest/playbooks_error_handling.html#overriding-the-changed-result
+                
+        PLAY RECAP
+            check at the end anything failed, changed
+                with colored status
+                
+            ansible allows to add our own
+                
+                changed_when
+                    driven by command exit status on hosts
+                
+                changed_when: false
+                
+                add to command tasks
+                    stack_status.yml
+                    
+                time ansible-playbook playbooks/stack_status.yml
+                    
+                        all changed is white colored(no change)
+                        
+            roles/nginx/tasks/main.yml
+                
+                task: get active sites
+                        changed_when: "active.stdout_lines != sites.keys()"
+                        
+                time ansible-playbook site.yml --limit lb01 --tags "configure"
+                
+                to test add a second app site to defaults/main.yml dict
+                    time ansible-playbook site.yml --limit lb01 --tags "configure"
+                    
+            failed_when
+                not driven by command exit status on hosts
+                    
+
+
+Accelerated Mode and Pipelining
+        
+        Ansible Docs - Accelerated Mode
+                http://docs.ansible.com/ansible/latest/playbooks_acceleration.html
+        Ansible Docs - pipelining
+                http://docs.ansible.com/ansible/latest/intro_configuration.html#pipelining
+                
+        ansible default connection mechanism to hosts
             
-        
-     
-     
-                
+                SSH
             
+        Other ansible approaches
         
-        
-        
-        
-    
+            python module
+                paramiko
+
+            modern approach
+                ControlPersist
+
+            Accerated Mode
+                in old versions only <1.5
+
+            Pipelining
+            
+            
+        Pipelining
+            
+            vi /etc/ansible/ansible.cfg
+                ssh section 
+                    pipelining = false/true
+                    
+            instead of global ansible.cfg
+                edit local ansible.cfg
+                    add 
+                        [ssh_connection]
+                        pipelining = True
+                        
+            sudo visudo
+                under default section
+                    some distribution have
+                        you can't sudo if you dont have true TTY
+                        
+                    this situation is problem for ansible
+                        so, we can add defaults for tty not required
+                        
                 
-    
+             check docs and give it a try to
+                accelerated mode or pipelining 
+                    to test
+                    
+             
+             
+         
