@@ -969,7 +969,29 @@ VARIABLES: vars_files, group_vars
               separate playbook for password rotation b/w different group of hosts can be created but
                   find balance b/w create a separate playbook for password rotation 
                         and complication of site.yml
+                        
+                        
+
+
+External Roles & Galaxy
+        
+         Ansible Galaxy
+                https://galaxy.ansible.com/
+         Ansible Docs - galaxy 
+                http://docs.ansible.com/ansible/latest/playbooks_roles.html#ansible-galaxy
+
+
+         Ansible Galaxy
+                Download and use Ansible Contents build by others
+                
+                How to choose a Role
+                    Long around available, lots people used it
+                    How much coverage does it have for underlying application
+                            difficult to custom a code built by others
+                                so, you need flexibility
+                    Updates rolling in or not ie new features etc
                     
+                
               
                     
                 
