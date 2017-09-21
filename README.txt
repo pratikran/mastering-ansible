@@ -787,10 +787,203 @@ VARIABLES: with_dict
             ansible-playbook loadbalancer.yml
             ansible-playbook playbooks/stack_status.yml
             
+
+
+Selective Removal: shell, register, with_items, when  
+        
+     Ansible Docs - shell
+            http://docs.ansible.com/ansible/latest/shell_module.html
+     Ansible Docs - register
+            http://docs.ansible.com/ansible/latest/playbooks_conditionals.html#register-variables
+     Ansible Docs - when
+            http://docs.ansible.com/ansible/latest/playbooks_conditionals.html#the-when-statement
+     Ansible Docs - with_items
+            http://docs.ansible.com/ansible/latest/playbooks_loops.html#standard-loops
+                
+                     
+     hidden problem introduced earlier
+            ssh lb01
+            ll /etc/nginx/sites-enabled/
+                demo
+                myapp
+                
+            demo is there from pre-refactoring phase
+                while building configuration management, 
+                    we must pay attention to what may have broken
+                    things which we meddled with
+     
+                need to make sure we have total control on folders or configs
+                    as here only one site shud be enabled at one time
+                    
+      conditionals can be used to control such changes
+            modules - shell, register, when, with_items
             
+            cd ansible
+            roles/nginx/tasks/main.yml
+                task - get active sites
+                    shell, register
+                task - de-activate sites
+                    file, with_items, when
+                    
+            ansible-playbook loadbalancer.yml
+                demo - show change (removal here)
+                myapp - show skipping(remains safe)
+                
+
+
+Variables - continued
+    
+    refactoring
+        demo app role
+            interfaces between tiers of app can be parameterized
+            path of app can also be parameterized for better management
             
+        ansible\roles\demo_app\files\demo\app\demo.wsgi
+            parameterize the db credentials
+                into a config file
+                
+                mkdir ansible\roles\demo_app\templates               
+                
+                move demo.wsgi file to templates
+                rename to demo.wsgi.j2
+                
+        ansible\roles\demo_app\tasks\main.yml
+            copy demo.wsgi.js template to web host site 
+            
+        ansible\webserver.yml
+            add parameters in demo.wsgi.j2 to under roles here
+            
+        ansible-playbook webserver.yml
+        
+        
+
+VARIABLES: vars_files, group_vars
+    
+     Ansible Docs - group_vars
+            http://docs.ansible.com/ansible/latest/intro_inventory.html#splitting-out-host-and-group-specific-data
+     Ansible Docs - vars_files 
+            http://docs.ansible.com/ansible/latest/playbooks_variables.html#variable-file-separation
+            
+     db credentials are at 2 different places
+        the names are different
+        
+        need to place them at a single source of truth variable file
+            inventory is one way
+                but not to be used here, as it is kept only of hosts list
+            vars files
+            group vars and host vars structure
+                all roles benefits
+                    though different files for diferent groups/roles can be created
+                variables autmatically picked up
+                
+                cd  ansible
+                mkdir group_vars
+                    all yaml file
+                        naming sequence coherent to app
+                    ansible/database.yml
+                        change the db params to substitute values from all yaml
+                        remove the global name patterns, as they will be globally available from all.yml
+                        
+                    ansible/webserver.yml
+                        remove db params as they match keys from all yaml
+                        just keep demo_app role
+                        
+                ansible-playbook webserver.yml
+                ansible-playbook database.yml
+                
+                        
+                    
+ VARIABLES: vault
+        
+        Ansible Docs - vault
+                http://docs.ansible.com/ansible/latest/playbooks_vault.html
+        
+        modularity and encapsulation
+        security of credentials
+            till now we have credentials in plain texts
+            
+        ansible vaults
+            vaults will keep credentials encrypted
+                supply them to ansible on fly
+                
+                little loss of visibility of values
+                
+                little optimal practice would be to maintain a vars file and alternate b/w them for specifics
+                
+        cd ansible/group_vars
+                rename all to vars
+                mkdir all
+                move vars to all
+                
+                ansible/group_vars/all/vars
+                
+         cd ansible/group_vars/all/
+            
+            export EDITOR=vi
+            ansible-vault create vault
+                
+                enter password twice
+                    it opens a file to put credentials
+                        this file can be opened using the password
+                    this is also a yaml
+                    
+                    enter key/value as you like
+                        vault_db_pass: ******
+                            see this key is different than key 'db_pass' in vars file
+                                useful to avoid collisions
+                        
+                    ls -la vault
+                        cat vault
+                            it is a text with AES256 encrypted values
+                            
+            to edit
+                ansible-vault edit vault
+                
+            ansible/group_vars/all/vars
+                edit to pull value of db_pass from vault
+                
+            cd ansible
+                
+                ansible-playbook site.yml
+                    ERROR! Decryption failed on /vagrant/ansible/group_vars/all/vault
+                    
+                it needs vault password, 2 ways to get around
+                    
+                    1.
+                        ansible-playbook --ask-vault-pass 
+                            enter vault password 
+                    2.
+                        cd ansible
+                        echo "password" > ~/.vault_pass.txt
+                        chmod 0600 !$
+                            ansible-playbook --vault-password-file 
+                            or better
+                            ansible/ansible.cfg 
+                                vault_password_file = ~/.vault_pass.txt
+                                
+                 ansible-playbook site.yml
+                 
+              ansible vault supports only one vault password during each execution
+                    need to distribute the vault password or vault password file for this execution when in large team
+                    
+              separate playbook for password rotation b/w different group of hosts can be created but
+                  find balance b/w create a separate playbook for password rotation 
+                        and complication of site.yml
+                    
+              
+                    
+                
                 
             
+                
+        
+                
+                
+            
+        
+     
+     
+                
             
         
         
