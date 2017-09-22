@@ -34,3 +34,5 @@ Resources for this lecture
     Virtualbox
     Vagrant
     Docker 
+        zip file in S7 directory
+        
