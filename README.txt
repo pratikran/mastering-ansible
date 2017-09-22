@@ -1274,7 +1274,47 @@ Debugging: debug
                         
                         
                         
-            
+Authentication with SSH Keys
+        
+        Putty - Simple Windows SSH Client
+                https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
+                
+        ssh-keygen -t rsa
+        
+        ssh-agent
+        
+        ssh key/pair
+        
+        end host authorized_keys
+        locally known_hosts
+                
+
+A Brief Overview of YAML
+        
+        YAML Project Homepage
+                http://yaml.org/
+        YAML Getting Started Page
+                http://www.yaml.org/start.html
+        Learn X in Y minutes - YAML - Tutorial 
+                https://learnxinyminutes.com/docs/yaml/
+                
+        
+                
+A Brief Overview of Jinja2
+        
+        Jinja2 Homepage
+                http://jinja.pocoo.org/
+                
+
+Dev Environment with Docker
+        
+        Docker Toolbox
+                https://www.docker.com/products/docker-toolbox
+        Virtualbox
+                https://www.virtualbox.org/
+        Vagrant
+                https://www.vagrantup.com/
+                
         
         
             
