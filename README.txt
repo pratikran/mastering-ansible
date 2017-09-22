@@ -1179,4 +1179,103 @@ Accelerated Mode and Pipelining
                     
              
              
-         
+Troubleshooting Ordering Problems
+        
+        mysql tasks
+            mysql server start
+            mysql configuration change
+                    order should be properly thought upon b/w aboce two
+                    
+        if things go wrong,
+            avoid manual twiking till last
+                but build ansible playbooks robust
+                
+        temporarily comment out failed step can be helpful
+            
+        ignore_errors: true
+            can be useful
+                use it once
+                    after corrected steps run
+                        remove it
+                        
+        trial and error
+        
+        work through ansible only
+            no external approach
+            
+            
+Jumping to Specific Tasks: list-tasks, step, start-at-task
+        
+        Ansible Docs - Start and Step
+            http://docs.ansible.com/ansible/latest/playbooks_startnstep.html
+            
+        hopping interactively to run individual tasks as wish-list
+            
+            ansible-playbook site.yml --step
+            
+            ansible-playbook site.yml --list-tasks
+            
+            ansible-playbook site.yml --start-at-task "copy demo app source"
+            
+
+
+Retrying Failed Hosts
+        
+        ansible-playbook site.yml --skip-tags "packages"
+        
+        ansible-playbook site.yml --limit @/vagrant/ansible/site.retry
+        
+        
+        
+Syntax-Check & Dry-Run: syntax-check, check
+        
+        Ansible Docs - Check Mode
+                http://docs.ansible.com/ansible/latest/playbooks_checkmode.html
+                
+        feedback before real run or deployment
+            
+            SYNTAX CHECK
+            ansible-playbook site.yml --syntax-check
+            
+            DRY-RUN
+            ansible-playbook site.yml --check
+            
+            inventory file required even if empty
+                
+
+
+Debugging: debug
+        
+        Ansible Docs - debug
+                http://docs.ansible.com/ansible/latest/debug_module.html
+                
+        
+        debug module
+        
+               helps get values from runtime environment
+                    like value of a variable on the fly
+                    
+               eg
+                    nginx tasks
+                        
+                        - debug: var=active.stdout_lines
+                            
+                            set this b/w tasks using active.stdout_lines
+                            
+                        ansible-playbook site.yml --limit lb01 --start-at-task "get-active-sites"
+                            
+                        - debug: var=db_name
+                        
+                        ansible-playbook site.yml --limit lb01 --start-at-task "get-active-sites"
+                        
+                        - debug: var=vars
+                        
+                        ansible-playbook site.yml --limit lb01 --start-at-task "get-active-sites"
+                        
+                        
+                        
+            
+        
+        
+            
+        
